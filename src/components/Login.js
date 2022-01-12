@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { login } from "../Redux/actions";
+import "./Login.scss";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -40,7 +41,7 @@ function Login() {
   return (
     <div>
       <h3>Login Form:</h3>
-      <form onSubmit={handleSubmit}>
+      <form className="form__container" onSubmit={handleSubmit}>
         <label>
           <span>email</span>
           <input

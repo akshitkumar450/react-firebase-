@@ -1,0 +1,23 @@
+// we can use scss direcyly,,just 
+// npm i sass and just use it ,not extra setup required
+
+$color-primary:red;
+
+form{
+    background-color: aqua;
+    height: 50vh;
+
+    label {
+        display: block;
+        color: $color-primary;
+        input{
+                margin: 10px auto;
+                width: 80%;
+                height: 40px;
+                margin-left: 20px;
+            }
+        &:hover{
+                background-color: #555;
+            }
+    }
+}
