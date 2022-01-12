@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../firebase";
+import { logout } from "../Redux/actions";
 import "./Navbar.css";
 
 function Navbar() {
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   const handleLogout = async () => {
     await auth.signOut();
+    dispatch(logout());
   };
   return (
     <div className="navbar__container">

@@ -48,6 +48,9 @@ function SignUp() {
       }
     }
   };
+  //   to prevent updating state if component is unmounted
+  //   this will be true when this component unmounts
+  //when cancel is true then any state update will not happen(line 38)
   useEffect(() => {
     return () => {
       setCancel(true);

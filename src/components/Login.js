@@ -24,11 +24,13 @@ function Login() {
         })
       );
       if (!cancel) {
+        setEmail("");
+        setPassword("");
         setLoading(false);
       }
     } catch (err) {
-      alert(err.message);
       if (!cancel) {
+        alert(err.message);
         setLoading(false);
       }
     }

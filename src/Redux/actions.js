@@ -9,3 +9,10 @@ export const logout = (user) => {
     type: "LOGOUT",
   };
 };
+
+export const ready = (user) => {
+  return {
+    type: "READY",
+    payload: user,
+  };
+};

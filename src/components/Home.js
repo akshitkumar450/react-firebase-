@@ -12,12 +12,12 @@ function Home() {
 
   const user = useSelector((state) => state.user.user);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     // console.log(title, amount);
     try {
-      db.collection("recipies").add({
+      await db.collection("recipies").add({
         title: title,
         amount: amount,
         uid: user.uid,
@@ -26,11 +26,13 @@ function Home() {
       if (!cancel) {
         setTitle("");
         setAmount("");
+        setLoading(false);
       }
-      setLoading(false);
     } catch (err) {
-      alert(err.message);
-      setLoading(false);
+      if (!cancel) {
+        alert(err.message);
+        setLoading(false);
+      }
     }
   };
   useEffect(() => {

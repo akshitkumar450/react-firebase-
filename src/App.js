@@ -7,20 +7,21 @@ import SignUp from "./components/SignUp";
 import { useEffect } from "react";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
-import { login, logout } from "./Redux/actions";
+import { login, logout, ready } from "./Redux/actions";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const isReady = useSelector((state) => state.user.isReady);
 
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         // log in
         dispatch(
-          login({
+          ready({
             name: authUser.displayName,
             email: authUser.email,
             uid: authUser.uid,
@@ -37,23 +38,25 @@ function App() {
   }, [dispatch]);
   return (
     <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route exact path="/">
-            {!user && <Redirect to="/login" />}
-            {user && <Home />}
-          </Route>
-          <Route path="/login">
-            {user && <Redirect to="/" />}
-            {!user && <Login />}
-          </Route>
-          <Route path="/signup">
-            {user && <Redirect to="/" />}
-            {!user && <SignUp />}
-          </Route>
-        </Switch>
-      </Router>
+      {isReady && (
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route exact path="/">
+              {!user && <Redirect to="/login" />}
+              {user && <Home />}
+            </Route>
+            <Route path="/login">
+              {user && <Redirect to="/" />}
+              {!user && <Login />}
+            </Route>
+            <Route path="/signup">
+              {user && <Redirect to="/" />}
+              {!user && <SignUp />}
+            </Route>
+          </Switch>
+        </Router>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 const initialState = {
   user: null,
+  isReady: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -13,6 +14,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: null,
+      };
+    case "READY":
+      return {
+        user: action.payload,
+        isReady: true,
       };
     default:
       return state;
