@@ -3,12 +3,24 @@ import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import firebase from "firebase";
 import RenderList from "./RenderList";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
+
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 function Home() {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState("");
   const [cancel, setCancel] = useState(false);
+  const [options, setOptions] = useState([]);
 
   const user = useSelector((state) => state.user.user);
 
@@ -56,7 +68,7 @@ function Home() {
   //   };
   // }, [user]);
   // console.log(data);
-
+  // console.log(category.value);
   useEffect(() => {
     let unsub;
     const fetchData = async () => {
@@ -73,6 +85,20 @@ function Home() {
       unsub();
     };
   }, []);
+  // console.log(data);
+
+  useEffect(() => {
+    let newArr = [];
+    newArr = data.map((user) => {
+      return {
+        value: user,
+        label: user.name,
+      };
+    });
+    console.log(newArr);
+
+    setOptions(newArr);
+  }, [data]);
 
   return (
     <div>
@@ -94,6 +120,15 @@ function Home() {
             onChange={(e) => setAmount(e.target.value)}
           />
         </label>
+        {/*
+        <select onChange={(e) => setCategory(e.target.value)} value={category}>
+          <option value="slect">select category</option>
+          <option value="design">Design</option>
+          <option value="ui">Ui</option>
+          <option value="dev">Dev</option>
+        </select>
+          */}
+        <Select onChange={(option) => setCategory(option)} options={options} />
         <button> {loading ? "adding" : "add"}</button>
       </form>
       <RenderList data={data} />
