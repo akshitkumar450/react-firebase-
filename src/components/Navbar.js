@@ -33,6 +33,7 @@ function Navbar() {
         )}
         {user && (
           <>
+            <img src={user.photo} alt="profile" width="50" />
             <h3>
               {user?.name}-{user?.email}
             </h3>

@@ -25,6 +25,7 @@ function App() {
             name: authUser.displayName,
             email: authUser.email,
             uid: authUser.uid,
+            photo: authUser.photoURL,
           })
         );
       } else {
@@ -38,25 +39,23 @@ function App() {
   }, [dispatch]);
   return (
     <div className="App">
-      {isReady && (
-        <Router>
-          <Navbar />
-          <Switch>
-            <Route exact path="/">
-              {!user && <Redirect to="/login" />}
-              {user && <Home />}
-            </Route>
-            <Route path="/login">
-              {user && <Redirect to="/" />}
-              {!user && <Login />}
-            </Route>
-            <Route path="/signup">
-              {user && <Redirect to="/" />}
-              {!user && <SignUp />}
-            </Route>
-          </Switch>
-        </Router>
-      )}
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            {!user && <Redirect to="/login" />}
+            {user && <Home />}
+          </Route>
+          <Route path="/login">
+            {user && <Redirect to="/" />}
+            {!user && <Login />}
+          </Route>
+          <Route path="/signup">
+            {user && <Redirect to="/" />}
+            {!user && <SignUp />}
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

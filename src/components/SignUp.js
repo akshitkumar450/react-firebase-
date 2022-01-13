@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { auth } from "../firebase";
+import { auth, storage } from "../firebase";
 import { login } from "../Redux/actions";
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -9,6 +9,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [cancel, setCancel] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -21,8 +22,15 @@ function SignUp() {
         password
       );
       //   console.log(authUser.user);
+
+      // uploading image and getting url
+      const imagePath = `profiles/${authUser.user.uid}/${image.name}`;
+      const img = await storage.ref(imagePath).put(image);
+      const imageUrl = await img.ref.getDownloadURL();
+
       await authUser.user.updateProfile({
         displayName: name,
+        photoURL: imageUrl,
       });
 
       dispatch(
@@ -30,6 +38,7 @@ function SignUp() {
           name: authUser.user.displayName,
           email: authUser.user.email,
           uid: authUser.user.uid,
+          photo: authUser.user.photoURL,
         })
       );
       //   histroy.push("/");
@@ -86,6 +95,15 @@ function SignUp() {
             onChange={(e) => setName(e.target.value)}
           />
         </label>
+        <label>
+          <span>upload image</span>
+          <input
+            accept="image/*"
+            type="file"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+        </label>
+
         <button>{loading ? "loading" : "signup"} </button>
       </form>
     </div>

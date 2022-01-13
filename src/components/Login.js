@@ -21,6 +21,7 @@ function Login() {
           name: authUser.user.displayName,
           email: authUser.user.email,
           uid: authUser.user.uid,
+          photo: authUser.user.photoURL,
         })
       );
       if (!cancel) {
