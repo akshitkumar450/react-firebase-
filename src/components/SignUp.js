@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { auth, storage } from "../firebase";
+import { auth, db, storage } from "../firebase";
 import { login } from "../Redux/actions";
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -31,6 +31,15 @@ function SignUp() {
       await authUser.user.updateProfile({
         displayName: name,
         photoURL: imageUrl,
+      });
+
+      // save the properties to currenly signed up used as a document
+      // when user signed up its login will true
+      db.collection("users").doc(authUser.user.uid).set({
+        name,
+        email,
+        photo: imageUrl,
+        online: true,
       });
 
       dispatch(

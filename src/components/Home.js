@@ -35,27 +35,45 @@ function Home() {
       }
     }
   };
-  useEffect(() => {
-    const unsub = db
-      .collection("recipies")
-      // fetching specific user info only
-      .where("uid", "==", user.uid)
-      .orderBy("createdAt", "desc")
-      .onSnapshot((snapshot) => {
-        let temp = [];
-        snapshot.docs.forEach((doc) => {
-          temp.push({ ...doc.data(), id: doc.id });
-          //console.log(doc.data());
-        });
-        setData(temp);
-      });
+  // useEffect(() => {
+  //   const unsub = db
+  //     .collection("recipies")
+  //     // fetching specific user info only
+  //     .where("uid", "==", user.uid)
+  //     .orderBy("createdAt", "desc")
+  //     .onSnapshot((snapshot) => {
+  //       let temp = [];
+  //       snapshot.docs.forEach((doc) => {
+  //         temp.push({ ...doc.data(), id: doc.id });
+  //         //console.log(doc.data());
+  //       });
+  //       setData(temp);
+  //     });
 
+  //   return () => {
+  //     unsub();
+  //     setCancel(true);
+  //   };
+  // }, [user]);
+  // console.log(data);
+
+  useEffect(() => {
+    let unsub;
+    const fetchData = async () => {
+      unsub = await db.collection("users").onSnapshot((snapshot) => {
+        let results = [];
+        snapshot.docs.forEach((doc) => {
+          results.push({ ...doc.data(), id: doc.id });
+        });
+        setData(results);
+      });
+    };
+    fetchData();
     return () => {
       unsub();
-      setCancel(true);
     };
-  }, [user]);
-  // console.log(data);
+  }, []);
+
   return (
     <div>
       <h3>All transactions</h3>

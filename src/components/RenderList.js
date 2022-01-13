@@ -10,8 +10,8 @@ function RenderList({ data }) {
       <h3>All transactions</h3>
       {data.map((item) => (
         <h4 key={item.id}>
-          {item.title}-{item.amount}-
-          <span onClick={() => handleDelete(item.id)}>X</span>
+          {item.name}-{item.email}-{item.online && "on"}
+          <img src={item.photo} alt="user-photo" width="50" />
         </h4>
       ))}
     </div>

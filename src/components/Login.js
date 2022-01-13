@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { login } from "../Redux/actions";
 import "./Login.scss";
 
@@ -16,6 +16,12 @@ function Login() {
     setLoading(true);
     try {
       const authUser = await auth.signInWithEmailAndPassword(email, password);
+      // update the online to true of the current logged in user when we login
+      await db
+        .collection("users")
+        .doc(authUser.user.uid)
+        .update({ online: true });
+
       dispatch(
         login({
           name: authUser.user.displayName,

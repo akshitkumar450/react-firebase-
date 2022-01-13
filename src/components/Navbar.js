@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { logout } from "../Redux/actions";
 import "./Navbar.css";
 
@@ -10,6 +10,8 @@ function Navbar() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const handleLogout = async () => {
+    // update online to false when we logout
+    await db.collection("users").doc(user.uid).update({ online: false });
     await auth.signOut();
     dispatch(logout());
   };
@@ -31,15 +33,15 @@ function Navbar() {
             </h3>
           </>
         )}
-        {user && (
+        {user?.photo && user?.name && (
           <>
-            <img src={user.photo} alt="profile" width="50" />
+            <img src={user?.photo} alt="profile" width="50" />
             <h3>
               {user?.name}-{user?.email}
             </h3>
-            <h3 onClick={handleLogout}>logout</h3>
           </>
         )}
+        {user && <h3 onClick={handleLogout}>logout</h3>}
       </div>
     </div>
   );
